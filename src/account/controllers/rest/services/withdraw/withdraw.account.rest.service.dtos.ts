@@ -1,14 +1,15 @@
+import { createZodDto } from 'nestjs-zod';
 import { AccountData } from '../../../../domain/entity/account.entity.data';
 import { z } from 'zod';
 
 export const WithdrawAccountRestServiceParamsDTOSchema = z.object({
   nickname: z.string(),
-  value: z.number(),
+  value: z.coerce.number(),
 });
 
-export type WithdrawAccountRestServiceParamsDTO = z.infer<
-  typeof WithdrawAccountRestServiceParamsDTOSchema
->;
+export class WithdrawAccountRestServiceParamsDTO extends createZodDto(
+  WithdrawAccountRestServiceParamsDTOSchema,
+) {}
 
 export type WithdrawAccountRestServiceResponseDTO = {
   account: AccountData;

@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import { AccountService } from '../../../../services/account/account.service';
 import {
   WithdrawAccountRestServiceParamsDTO,
@@ -7,6 +8,7 @@ import {
 type Params = WithdrawAccountRestServiceParamsDTO;
 type Response = WithdrawAccountRestServiceResponseDTO;
 
+@Injectable()
 export class WithdrawAccountRestService {
   constructor(private readonly accountService: AccountService) {}
 

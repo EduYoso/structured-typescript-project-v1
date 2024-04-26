@@ -1,14 +1,16 @@
+import { Injectable } from '@nestjs/common';
 import { Account } from '../../domain/entity/account.entity';
-import { AccountRepository } from '../../domain/repository/account.repository';
 import { CreateAccountServiceParamsDTO } from './create.account.service.dtos';
 import { CreateAccountServiceResponseDTO } from './create.account.service.dtos';
 import { randomUUID } from 'crypto';
+import { AccountRepositoryService } from '../../infra';
 
 type Params = CreateAccountServiceParamsDTO;
 type Response = CreateAccountServiceResponseDTO;
 
+@Injectable()
 export class CreateAccountService {
-  constructor(private accountRepository: AccountRepository) {}
+  constructor(private accountRepository: AccountRepositoryService) {}
 
   async execute(params: Params): Promise<Response> {
     const accountWithNicknameExists = await this.accountRepository.findUnique({

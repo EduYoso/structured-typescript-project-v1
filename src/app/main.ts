@@ -1,66 +1,23 @@
-import express from 'express';
-import { accountRestController } from '../account/account.module';
+import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
+import {
+  HeyNovaExceptionFilter,
+  HeyNovaZodValidationPipe,
+} from '@heynova/core';
 
-const app = express();
+const bootstrap = async () => {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new HeyNovaZodValidationPipe());
+  app.useGlobalFilters(
+    new HeyNovaExceptionFilter({
+      onException: (e) => {
+        console.log(e);
+      },
+    }),
+  );
+  await app.listen(3000, () => {
+    console.log('Servidor rodando da porta 3000');
+  });
+};
 
-app.get('/bank/:operation', async (request, response) => {
-  const { operation } = request.params;
-
-  switch (operation) {
-    case 'create-account':
-      try {
-        const { account } = await accountRestController.create(request.query);
-
-        response.end(JSON.stringify(account));
-      } catch (e) {
-        if (e instanceof Error) {
-          response.end(e.message);
-        }
-      }
-      break;
-
-    case 'deposit':
-      try {
-        const { account } = await accountRestController.deposit(request.query);
-
-        response.end(JSON.stringify(account));
-      } catch (e) {
-        if (e instanceof Error) {
-          response.end(e.message);
-        }
-      }
-      break;
-
-    case 'withdraw':
-      try {
-        const { account } = await accountRestController.withdraw(request.query);
-
-        response.end(JSON.stringify(account));
-      } catch (e) {
-        if (e instanceof Error) {
-          response.end(e.message);
-        }
-      }
-      break;
-
-    case 'balance':
-      try {
-        const { account } = await accountRestController.balance(request.query);
-
-        response.end(`Your balance is ${account.balance}.`);
-      } catch (e) {
-        if (e instanceof Error) {
-          response.end(e.message);
-        }
-      }
-      break;
-
-    default:
-      response.end('Invalid operation');
-      break;
-  }
-});
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000.');
-});
+bootstrap();

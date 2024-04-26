@@ -7,3 +7,12 @@ class TipoQueFoiGeradoPeloZod {}
 const schema = Reflect.getMetadata('schema', TipoQueFoiGeradoPeloZod);
 
 //schema é um zodSchema que tem ".parse"
+
+---------------------------------------------------------
+13/04
+
+• Arrumar o editor config
+• Instalar dependencias do nest na unha
+• Lembrar da NestFactory
+• Lembrar dos index nas pastas
+• Implementar o Nest

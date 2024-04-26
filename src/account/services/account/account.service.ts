@@ -21,7 +21,9 @@ import {
   BalanceAccountServiceParamsDTO,
   BalanceAccountServiceResponseDTO,
 } from '../balance/balance.account.service.dtos';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class AccountService {
   constructor(
     private readonly getAccountService: GetAccountService,

@@ -1,22 +1,26 @@
 import {
-  BalanceAccountRestServiceParamsDTOSchema,
+  BalanceAccountRestServiceParamsDTO,
   BalanceAccountRestServiceResponseDTO,
 } from './services/balance/balance.account.rest.service.dtos';
 import { CreateAccountRestService } from './services/create/create.account.rest.service';
 import {
-  CreateAccountRestServiceParamsDTOSchema,
+  CreateAccountRestServiceParamsDTO,
   CreateAccountRestServiceResponseDTO,
 } from './services/create/create.account.rest.service.dtos';
 import { DepositAccountRestService } from './services/deposit/deposit.account.rest.service';
 import {
-  DepositAccountRestServiceParamsDTOSchema,
+  DepositAccountRestServiceParamsDTO,
   DepositAccountRestServiceResponseDTO,
 } from './services/deposit/deposit.account.rest.service.dtos';
 import { WithdrawAccountRestService } from './services/withdraw/withdraw.account.rest.service';
-import { WithdrawAccountRestServiceResponseDTO } from './services/withdraw/withdraw.account.rest.service.dtos';
+import {
+  WithdrawAccountRestServiceParamsDTO,
+  WithdrawAccountRestServiceResponseDTO,
+} from './services/withdraw/withdraw.account.rest.service.dtos';
 import { BalanceAccountRestService } from './services/balance/balance.account.rest.service';
-import { WithdrawAccountRestServiceParamsDTOSchema } from './services/withdraw/withdraw.account.rest.service.dtos';
+import { Controller, Get, Query } from '@nestjs/common';
 
+@Controller('/bank')
 export class AccountRestController {
   constructor(
     private readonly createAccountRestService: CreateAccountRestService,
@@ -24,29 +28,32 @@ export class AccountRestController {
     private readonly withdrawAccountRestService: WithdrawAccountRestService,
     private readonly balanceAccountRestService: BalanceAccountRestService,
   ) {}
-  async create(params: unknown): Promise<CreateAccountRestServiceResponseDTO> {
-    const paramsDTO = CreateAccountRestServiceParamsDTOSchema.parse(params);
-    return this.createAccountRestService.execute(paramsDTO);
+
+  @Get('/create-account')
+  async create(
+    @Query() query: CreateAccountRestServiceParamsDTO,
+  ): Promise<CreateAccountRestServiceResponseDTO> {
+    return this.createAccountRestService.execute(query);
   }
 
+  @Get('/deposit')
   async deposit(
-    params: unknown,
+    @Query() query: DepositAccountRestServiceParamsDTO,
   ): Promise<DepositAccountRestServiceResponseDTO> {
-    const paramsDTO = DepositAccountRestServiceParamsDTOSchema.parse(params);
-    return this.depositAccountRestService.execute(paramsDTO);
+    return this.depositAccountRestService.execute(query);
   }
 
+  @Get('/withdraw')
   async withdraw(
-    params: unknown,
+    @Query() query: WithdrawAccountRestServiceParamsDTO,
   ): Promise<WithdrawAccountRestServiceResponseDTO> {
-    const paramsDTO = WithdrawAccountRestServiceParamsDTOSchema.parse(params);
-    return this.withdrawAccountRestService.execute(paramsDTO);
+    return this.withdrawAccountRestService.execute(query);
   }
 
+  @Get('/balance')
   async balance(
-    params: unknown,
+    @Query() query: BalanceAccountRestServiceParamsDTO,
   ): Promise<BalanceAccountRestServiceResponseDTO> {
-    const paramsDTO = BalanceAccountRestServiceParamsDTOSchema.parse(params);
-    return this.balanceAccountRestService.execute(paramsDTO);
+    return this.balanceAccountRestService.execute(query);
   }
 }

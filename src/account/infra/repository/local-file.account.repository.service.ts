@@ -6,7 +6,7 @@ import { readFile, writeFile } from 'fs/promises';
 
 type JsonFile = Record<string, AccountData>;
 
-const jsonFilePath = join(__dirname, 'accounts.json');
+const jsonFilePath = join(__dirname, '../../../../accounts.json');
 
 const assertJsonFile = async (): Promise<void> => {
   try {

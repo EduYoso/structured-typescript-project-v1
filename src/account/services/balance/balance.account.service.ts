@@ -1,4 +1,4 @@
-import { AccountRepository } from '../../domain/repository/account.repository';
+import { Injectable } from '@nestjs/common';
 import {
   BalanceAccountServiceParamsDTO,
   BalanceAccountServiceResponseDTO,
@@ -7,9 +7,8 @@ import {
 type Params = BalanceAccountServiceParamsDTO;
 type Response = BalanceAccountServiceResponseDTO;
 
+@Injectable()
 export class BalanceAccountService {
-  constructor(private accountRepository: AccountRepository) {}
-
   async execute(params: Params): Promise<Response> {
     const account = params.toAccount;
 
