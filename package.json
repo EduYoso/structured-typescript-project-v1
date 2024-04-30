@@ -27,6 +27,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@heynova/common": "^0.0.24",
     "@heynova/core": "^0.0.37",
     "@nestjs/common": "^10.3.8",
     "@nestjs/core": "^10.3.8",

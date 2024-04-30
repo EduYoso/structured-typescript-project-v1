@@ -3,6 +3,7 @@ import { Account } from '../../domain/entity/account.entity';
 import { AccountRepository } from '../../domain/repository/account.repository';
 import { AccountData } from '../../domain/entity/account.entity.data';
 import { readFile, writeFile } from 'fs/promises';
+import { InternalServerHeyNovaError } from '@heynova/common/errors';
 
 type JsonFile = Record<string, AccountData>;
 
@@ -23,7 +24,9 @@ const loadJsonFile = async (): Promise<JsonFile> => {
     const json = JSON.parse(file);
     return json;
   } catch (e) {
-    throw new Error('Error loading json file');
+    throw new InternalServerHeyNovaError({
+      message: 'Error loading json file',
+    });
   }
 };
 
@@ -32,7 +35,7 @@ const saveJsonFile = async (json: JsonFile): Promise<void> => {
   try {
     await writeFile(jsonFilePath, JSON.stringify(json, null, 2));
   } catch (e) {
-    throw new Error('Error saving json file');
+    throw new InternalServerHeyNovaError({ message: 'Error saving json file' });
   }
 };
 

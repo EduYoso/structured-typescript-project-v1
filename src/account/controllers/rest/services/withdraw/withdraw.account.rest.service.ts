@@ -4,6 +4,7 @@ import {
   WithdrawAccountRestServiceParamsDTO,
   WithdrawAccountRestServiceResponseDTO,
 } from './withdraw.account.rest.service.dtos';
+import { NotFoundHeyNovaError } from '@heynova/common/errors';
 
 type Params = WithdrawAccountRestServiceParamsDTO;
 type Response = WithdrawAccountRestServiceResponseDTO;
@@ -17,7 +18,11 @@ export class WithdrawAccountRestService {
       by: { nickname: params.nickname },
     });
 
-    if (!accountExists) throw new Error('account not found');
+    if (!accountExists)
+      throw new NotFoundHeyNovaError({
+        message: 'Account not found',
+        info: params,
+      });
 
     const account = this.accountService.withdraw({
       toAccount: accountExists,

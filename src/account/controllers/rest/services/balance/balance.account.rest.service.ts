@@ -4,6 +4,7 @@ import {
   BalanceAccountRestServiceParamsDTO,
   BalanceAccountRestServiceResponseDTO,
 } from './balance.account.rest.service.dtos';
+import { NotFoundHeyNovaError } from '@heynova/common/errors';
 
 type Params = BalanceAccountRestServiceParamsDTO;
 type Response = BalanceAccountRestServiceResponseDTO;
@@ -17,7 +18,11 @@ export class BalanceAccountRestService {
       by: { nickname: params.nickname },
     });
 
-    if (!account) throw new Error('account not found');
+    if (!account)
+      throw new NotFoundHeyNovaError({
+        message: 'Account not found',
+        info: params,
+      });
 
     return { account };
   }

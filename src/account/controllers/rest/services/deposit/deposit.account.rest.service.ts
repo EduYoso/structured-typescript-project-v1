@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AccountService } from '../../../../services/account/account.service';
 import { DepositAccountRestServiceParamsDTO } from './deposit.account.rest.service.dtos';
 import { DepositAccountRestServiceResponseDTO } from './deposit.account.rest.service.dtos';
+import { NotFoundHeyNovaError } from '@heynova/common/errors';
 
 type Params = DepositAccountRestServiceParamsDTO;
 type Response = DepositAccountRestServiceResponseDTO;
@@ -15,7 +16,11 @@ export class DepositAccountRestService {
       by: { nickname: params.nickname },
     });
 
-    if (!accountExists) throw new Error('account not found');
+    if (!accountExists)
+      throw new NotFoundHeyNovaError({
+        message: 'account not found',
+        info: params,
+      });
     console.log(params.value);
 
     const account = this.accountService.deposit({

@@ -4,6 +4,7 @@ import { CreateAccountServiceParamsDTO } from './create.account.service.dtos';
 import { CreateAccountServiceResponseDTO } from './create.account.service.dtos';
 import { randomUUID } from 'crypto';
 import { AccountRepositoryService } from '../../infra';
+import { AlreadyExistsHeyNovaError } from '@heynova/common/errors';
 
 type Params = CreateAccountServiceParamsDTO;
 type Response = CreateAccountServiceResponseDTO;
@@ -18,7 +19,9 @@ export class CreateAccountService {
     });
 
     if (accountWithNicknameExists.account)
-      throw new Error('Account with nickname already exists');
+      throw new AlreadyExistsHeyNovaError({
+        message: 'Account with nickname already exists',
+      });
     const accountId = randomUUID();
 
     const account = new Account({
